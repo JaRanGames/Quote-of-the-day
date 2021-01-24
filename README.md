@@ -3,7 +3,7 @@
 
 ## Vad Alex ska göra till nästa gång
 * ta bort console.log debugging
-* gör quotes (minst 30 stycken) (du får hämta från internet)
+* gör quotes (minst 20 stycken, helst 30) (du får hämta från internet)
 
 ## Vad vi har kvar att göra
 * göra likefunktion på quotes
