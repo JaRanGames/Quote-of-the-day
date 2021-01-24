@@ -168,6 +168,32 @@ app.delete("/quote", async (req, res) => {
 
 	// om den finns, så ta
 })
+
+app.patch("/quote", async (req, res) => {
+
+	// TEST user input
+	if (req.body.id == undefined || req.body.quote == undefined) {
+		// DUBBELKOLLA ATT DET FINNS EN QUOTE) {
+		res.json({
+			message: "Du skickade inte med en id eller quote"
+		})
+		return;
+	}
+	await quoteModel.updateOne({
+		_id: req.body.id
+	}, 
+	
+	{
+		quote: req.body.quote
+	})
+
+	res.json({
+		message: "allting gick bra"
+	})
+
+	// HÄR UPPDATERAR VI QUOTESN
+})
+
 /* 
 	POST alex.com/login
 	GET alex.com/user
@@ -177,36 +203,4 @@ app.delete("/quote", async (req, res) => {
 app.listen(port, async () => {
 	console.log("server is running");
 	connectDB();
-
-	/* Skapa ny quote
-	const minQuote = new quoteModel({
-		quote: "Om gräset är grönare på andra sidan så har man glömt att vattna sitt eget.",
-		author: "Alexander Jaran"
-	})
-
-	minQuote.save(); */
-
-	/* Sökte vi upp en quote (element)
-	const data = await quoteModel.findOne({
-		author: "Alexander Jaran"
-	})
-
-	console.log(data) */
-
-	//Uppdaterar
-	/*const data = await quoteModel.findOneAndUpdate({
-		_id: "5ff1e29266de031c787ac205"
-	},
-	{
-		author: "Linus Svensson"
-	}, 
-	{
-		new: true
-	})
-
-	console.log(data);*/
-
-	/* await quoteModel.deleteOne({
-		_id: "5ff1e29266de031c787ac205"
-	}) */
 })
