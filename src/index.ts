@@ -20,6 +20,14 @@ app.use(express.urlencoded({ extended: true }))
 // localhost/login = 127.0.0.1/login
 app.get("/quote", async (req, res) => {
 
+	// TEST user input
+	if (req.query.id == undefined) {
+		res.json({
+			message: "du skickade inte med id"
+		})
+		return;
+	}
+
 	// Hämta alla quotes med en specifik author
 	// ELLER hämta en quote med id
 
@@ -57,6 +65,16 @@ app.get("/quote", async (req, res) => {
 })
 
 app.post("/quote", async (req, res) => {
+
+	// TEST user input
+
+	if (req.body.author == undefined || req.body.quote == undefined) {
+		res.json({
+			message: "du glömde att fylla i author eller quote"
+		})
+
+		return;
+	}
 
 	// TODO se till att det alltid är rätt variabelr med
 	
@@ -105,7 +123,15 @@ app.post("/quote", async (req, res) => {
 })
 
 app.delete("/quote", async (req, res) => {
-	// dubbelkolla så att id finns (alltså att vi skickat id från postman)
+
+	// TEST user input
+	if (req.body.id == undefined) {
+		res.json({
+			message: "du skickade inte med id"
+		})
+		return;
+	}
+
 	// Fråga databasen om id finns
 	console.log("yes1")
 	
