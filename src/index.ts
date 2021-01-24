@@ -20,48 +20,51 @@ app.use(express.urlencoded({ extended: true }))
 // localhost/login = 127.0.0.1/login
 app.get("/quote", async (req, res) => {
 
-	// TEST user input
-	if (req.query.id == undefined) {
-		res.json({
-			message: "du skickade inte med id"
-		})
-		return;
-	}
-
 	// Hämta alla quotes med en specifik author
 	// ELLER hämta en quote med id
 
-	// OBS: bara när vi gör GET så använder vi query istället för body
-	let id = req.query.id
-	let document = await quoteModel.findOne({
-		_id: id
-	}) as mongoose.Document & {
-		quote: string,
-		author: string,
-		createdAt: Date,
-		updatedAt: Date
-	}
+	// OM vi har author men ingen id kör if
 
-	if (document != null) {
-		res.json({
-			message: "Här kommer datan",
-			quote: document.quote,
-			author: document.author,
-			createdAt: document.createdAt,
-			updatedAt: document.updatedAt
+	if (req.query.author != null && req.query.id == null) {
+		let documents = await quoteModel.find({
+			author: req.query.author
 		})
-
-		return;
+		res.json({
+			message: "här kommer alla quotes",
+			quotes: documents
+		})
 	}
 
-	console.log("ney");
+	else if (req.query.id != null && req.query.author == null) {
+		let id = req.query.id
+		let document = await quoteModel.findOne({
+			_id: id
+		}) as mongoose.Document & {
+			quote: string,
+			author: string,
+			createdAt: Date,
+			updatedAt: Date
+		}
 
-	//req.body.variabel
-	// exempel req.body.username
+		
+		if (document != null) {
+			res.json({
+				message: "Här kommer datan",
+				quote: document.quote,
+				author: document.author,
+				createdAt: document.createdAt,
+				updatedAt: document.updatedAt
+			})
 
-	res.json({
-		message: "det funka inte (fel kod(antar jag))"
-	})
+			return;
+		}
+	}
+
+	else {
+		res.json({
+			message: "du måste skicka med id eller author"
+		})
+	}
 })
 
 app.post("/quote", async (req, res) => {
