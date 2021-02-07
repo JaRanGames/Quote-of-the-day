@@ -2,12 +2,12 @@
 # Typescript module
 
 ## Vad Alex ska göra till nästa gång
-* ta bort console.log debugging
-* gör quotes (minst 20 stycken, helst 30) (du får hämta från internet)
+* välj mellan react och vanlig html (reactjs.org)
+* börja designa sida, rita lite hur du vill ha den
+* fortsätt göra lite quotes (låg prio)
 
 ## Vad vi har kvar att göra
-* göra likefunktion på quotes
-* göra commentfunktion på quotes
+* själva sidan som man använder som användare
 
 ## Vad vi gjort:
 * GET route för quotes   
@@ -15,3 +15,5 @@
 * POST route för quotes
 * DELETE route för quotes
 * PATCH route för quotes
+* ta bort console.log debugging
+

@@ -1,8 +1,9 @@
 import mongoose from "mongoose"
-import express from "express"
+import express, { json } from "express"
 import { connectDB } from "./database.connection"
 import quoteModel from "./quote.model"
 import { isDefaultClause, visitFunctionBody } from "typescript"
+import { IQuotes } from "./quote.model"
 const port = 25720
 const app = express()
 
@@ -39,21 +40,17 @@ app.get("/quote", async (req, res) => {
 		let id = req.query.id
 		let document = await quoteModel.findOne({
 			_id: id
-		}) as mongoose.Document & {
-			quote: string,
-			author: string,
-			createdAt: Date,
-			updatedAt: Date
-		}
-
+		}) as mongoose.Document & IQuotes
 		
 		if (document != null) {
 			res.json({
 				message: "Här kommer datan",
 				quote: document.quote,
 				author: document.author,
+				likes: document.likes,
+				comments: document.comments,
 				createdAt: document.createdAt,
-				updatedAt: document.updatedAt
+				updatedAt: document.updatedAt,
 			})
 
 			return;
@@ -65,6 +62,61 @@ app.get("/quote", async (req, res) => {
 			message: "du måste skicka med id eller author"
 		})
 	}
+})
+
+app.patch("/quote/like", async (req, res) => {
+	// TEST user input
+
+	if (req.body.id == undefined || req.body.like == undefined || req.body.fingerprint == undefined) {
+		res.json({
+			message: "du glömde att fylla antingen id, like eller fingerprint"
+		})
+
+		return;
+	}
+	let document = await quoteModel.findOne({
+		_id: req.body.id
+	}) as unknown as mongoose.Document & {
+		quote: string,
+		author: string,
+		likes: Array<string>,
+		createdAt: Date,
+		updatedAt: Date
+	}
+
+	if (document == null) {
+		res.json({
+			message: "dumdum det funkade inte"
+		})
+
+		return;
+	}
+
+	// testa ifall vi ska lägga till eller ta bort en like
+	if (req.body.like === "true") {
+		const index = document.likes.findIndex((current) => current.toString() === req.body.fingerprint)
+		if (index < 0) {
+			// lägg till like
+			if (document.likes == undefined) 
+				document.likes = [req.body.fingerprint]
+			else
+				document.likes.push(req.body.fingerprint);
+		}
+	}
+
+	else {
+		const index = document.likes.findIndex((current) => current.toString() === req.body.fingerprint)
+		document.likes.splice(index, 1)
+	}
+
+	document.save()
+
+	// utför rätt operation
+
+	// spara
+	res.json({
+		message: "det fungerade"
+	})
 })
 
 app.post("/quote", async (req, res) => {
@@ -136,14 +188,11 @@ app.delete("/quote", async (req, res) => {
 	}
 
 	// Fråga databasen om id finns
-	console.log("yes1")
 	
 	let id = req.body.id
 	let document = await quoteModel.findOne({
 		_id: id
 	})
-
-	console.log("yes2")
 
 	// OM id är null så ska vi meddelandet
 	
@@ -164,8 +213,6 @@ app.delete("/quote", async (req, res) => {
 		})
 	}
 
-	console.log("Yes 3", document)
-
 	// om den finns, så ta
 })
 
@@ -181,9 +228,7 @@ app.patch("/quote", async (req, res) => {
 	}
 	await quoteModel.updateOne({
 		_id: req.body.id
-	}, 
-	
-	{
+	}, {
 		quote: req.body.quote
 	})
 
@@ -194,6 +239,83 @@ app.patch("/quote", async (req, res) => {
 	// HÄR UPPDATERAR VI QUOTESN
 })
 
+app.delete("/quote/comment", async (req, res) => {
+	// TEST USER INPUT
+	if (req.body.commentID == undefined || req.body.commentID.length <= 0 || req.body.quoteID == undefined || req.body.quoteID.length <= 0) {
+		// DUBBELKOLLA ATT DET FINNS EN QUOTE) {
+		res.json({
+			message: "Du är trash"
+		})
+		return;
+	}
+
+	// Hämta rätt quote document
+	const quoteDocument = await quoteModel.findOne({
+		_id: req.body.quoteID
+	}) as mongoose.Document & IQuotes
+
+	 [
+		 // comment 1 {jgksjkgj}
+		 // comment 2
+		 // comment 3
+	 ]
+
+	const index = quoteDocument.comments.findIndex((current) => current._id != undefined && current._id.toString() === req.body.commentID.toString())
+
+	if (index == -1) {
+		res.json({
+			message: "comnmenten finns inte"
+		}) 		
+		return
+	}
+
+	quoteDocument.comments.splice(index, 1)
+
+	quoteDocument.save()
+	res.json({
+		message: "yes workig"
+	})
+})
+
+app.post("/quote/comment", async (req, res) => {
+	// TESTA INPUT
+	if (req.body.comment == undefined || req.body.id == undefined || req.body.comment.length <= 0 || req.body.author == undefined || req.body.author.length <= 0) {
+		// DUBBELKOLLA ATT DET FINNS EN QUOTE) {
+		res.json({
+			message: "Du är trash"
+		})
+		return;
+	}
+
+	// Hämta rätt quoteDOCUMENT
+	const quoteDocument = await quoteModel.findOne({
+		_id: req.body.id
+	}) as mongoose.Document & IQuotes
+
+	// Kolla så att quotedocument faktiskt finns (kolla om det är null)
+
+	if (quoteDocument == null) {
+		res.json({
+			message: "rgfdaokjhadflköjngklöngakgnaoönb"
+		})
+		return
+	}
+	
+	// Lägg till comment
+	let blä = quoteDocument.comments
+	blä.push({
+		comment: req.body.comment,
+		author: req.body.author
+	})
+
+	quoteDocument.save()
+	res.json({
+		message: "yes everything ok"
+	})
+
+	// SPara nya quoteDOCUMENT
+})
+
 /* 
 	POST alex.com/login
 	GET alex.com/user
@@ -201,6 +323,6 @@ app.patch("/quote", async (req, res) => {
 */
 
 app.listen(port, async () => {
-	console.log("server is running");
+	console.log("Server is Running");
 	connectDB();
 })
