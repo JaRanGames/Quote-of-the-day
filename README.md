@@ -2,9 +2,6 @@
 # Typescript module
 
 ## Vad Alex ska göra till nästa gång
-* Tänker ut hur du vill visa likes (och hur man ska kunna lika)
-* Tänker ut hur du vill visa comments (ska kunna ha flera comments inte bara en)
-* Tänker ut hur man ska kunna göra comments
 * Extra: Designa quote.tsx
 
 ## Vad vi har kvar att göra
@@ -20,3 +17,6 @@
 * välj mellan react och vanlig html (reactjs.org)
 * börja designa sida, rita lite hur du vill ha den
 * fortsätt göra lite quotes (låg prio)
+* Tänker ut hur du vill visa likes (och hur man ska kunna lika)
+* Tänker ut hur du vill visa comments (ska kunna ha flera comments inte bara en)
+* Tänker ut hur man ska kunna göra comments
