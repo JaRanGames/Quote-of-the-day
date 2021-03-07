@@ -4,11 +4,14 @@ import { connectDB } from "./database.connection"
 import quoteModel from "./quote.model"
 import { isDefaultClause, visitFunctionBody } from "typescript"
 import { IQuotes } from "./quote.model"
+import morgan from "morgan"
+
 const port = 25720
 const app = express()
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(morgan("dev"))
 
 // Request codes
 // 200 - allting gick bra
@@ -23,10 +26,18 @@ app.get("/quote", async (req, res) => {
 
 	// Hämta alla quotes med en specifik author
 	// ELLER hämta en quote med id
+	// ELLER hämta bara allt
 
 	// OM vi har author men ingen id kör if
 
-	if (req.query.author != null && req.query.id == null) {
+	if (req.query.author == null && req.query.id == null) {
+		let documents = await quoteModel.find()
+		res.json({
+			message: "här kommer alla quotes",
+			quotes: documents
+		})
+	}
+	else if (req.query.author != null && req.query.id == null) {
 		let documents = await quoteModel.find({
 			author: req.query.author
 		})
@@ -66,6 +77,8 @@ app.get("/quote", async (req, res) => {
 
 app.patch("/quote/like", async (req, res) => {
 	// TEST user input
+
+	console.log(req.body)
 
 	if (req.body.id == undefined || req.body.like == undefined || req.body.fingerprint == undefined) {
 		res.json({
