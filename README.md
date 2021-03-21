@@ -2,6 +2,7 @@
 # Typescript module
 
 ## Vad Alex ska göra till nästa gång
+* Extrahera comments till egen sida
 * Extra: Designa quote.tsx
 
 ## Vad vi har kvar att göra
