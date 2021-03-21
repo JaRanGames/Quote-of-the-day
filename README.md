@@ -2,11 +2,12 @@
 # Typescript module
 
 ## Vad Alex ska göra till nästa gång
-* Extrahera comments till egen sida
-* Extra: Designa quote.tsx
+* Hitta två olika bilder för like (en på och en av)
+* Växla position på author input och comment input
 
 ## Vad vi har kvar att göra
 * själva sidan som man använder som användare
+* Extrahera comments till egen sida
 
 ## Vad vi gjort:
 * GET route för quotes   
@@ -21,3 +22,4 @@
 * Tänker ut hur du vill visa likes (och hur man ska kunna lika)
 * Tänker ut hur du vill visa comments (ska kunna ha flera comments inte bara en)
 * Tänker ut hur man ska kunna göra comments
+* * Extra: Designa quote.tsx
