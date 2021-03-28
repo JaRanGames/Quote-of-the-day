@@ -5,6 +5,12 @@
 * Hitta två olika bilder för like (en på och en av)
 * Växla position på author input och comment input
 
+## Upcomming
+* Fingerprinta quotes (så bara authorn ser "admin stuff")
+* React pages, olika pages för olika ändamål
+* Sockets, "live update"
+* Heroku, publisera sidan (eventuellt domän "alexanderjaran.com" eller nåt)
+
 ## Vad vi har kvar att göra
 * själva sidan som man använder som användare
 * Extrahera comments till egen sida
