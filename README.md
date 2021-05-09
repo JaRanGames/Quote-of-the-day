@@ -2,10 +2,11 @@
 # Typescript module
 
 ## Vad Alex ska göra till nästa gång
-* Hitta två olika bilder för like (en på och en av)
-* Växla position på author input och comment input
+* Designa comments sidan, (designa hur varje comment ska se ut, OCH designa "Home" knappen)
+* Bestämma om du vill ha fler sidor (exempelvis en egen sida för att skapa quotes)
 
 ## Upcomming
+* Designa kort vy av quotes
 * Fingerprinta quotes (så bara authorn ser "admin stuff")
 * React pages, olika pages för olika ändamål
 * Sockets, "live update"
