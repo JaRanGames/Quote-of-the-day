@@ -1,10 +1,10 @@
 import mongoose from "mongoose"
-import express, { json } from "express"
+import express from "express"
 import { connectDB } from "./database.connection"
 import quoteModel from "./quote.model"
-import { isDefaultClause, visitFunctionBody } from "typescript"
 import { IQuotes } from "./quote.model"
 import morgan from "morgan"
+import { Socket } from "dgram"
 
 const port = 25720
 const app = express()
@@ -12,6 +12,9 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(morgan("dev"))
+
+const server = require("http").createServer(app);
+const io = require("socket.io")(server);
 
 // Request codes
 // 200 - allting gick bra
@@ -335,7 +338,15 @@ app.post("/quote/comment", async (req, res) => {
 	POST alex.com/user 
 */
 
-app.listen(port, async () => {
+io.on("connection", (socket: Socket) => {
+	console.log("HELLO")
+
+	socket.on("disconnect", () => {
+		console.log("Connection ended")
+	})
+});
+
+server.listen(port, async () => {
 	console.log("Server is Running");
 	connectDB();
 })
