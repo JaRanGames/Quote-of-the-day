@@ -4,7 +4,8 @@ import { connectDB } from "./database.connection"
 import quoteModel from "./quote.model"
 import { IQuotes } from "./quote.model"
 import morgan from "morgan"
-import { Socket } from "dgram"
+import { Socket } from "socket.io"
+import { stringify } from "querystring"
 
 const port = 25720
 const app = express()
@@ -80,8 +81,6 @@ app.get("/quote", async (req, res) => {
 
 app.patch("/quote/like", async (req, res) => {
 	// TEST user input
-
-	console.log(req.body)
 
 	if (req.body.id == undefined || req.body.like == undefined || req.body.fingerprint == undefined) {
 		res.json({
@@ -340,6 +339,20 @@ app.post("/quote/comment", async (req, res) => {
 
 io.on("connection", (socket: Socket) => {
 	console.log("HELLO")
+
+	socket.join("main")
+
+	socket.on("like", (data: {
+		id: string,
+		like: boolean,
+		fingerprint: string
+	}) => {
+		socket.to("main").emit("like", data)
+	})
+
+	socket.on("deleteQuote", (data: string) => {
+		socket.to("main").emit("deleteQuote", data)
+	})
 
 	socket.on("disconnect", () => {
 		console.log("Connection ended")
