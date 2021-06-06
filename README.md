@@ -2,8 +2,7 @@
 # Typescript module
 
 ## Vad Alex ska göra till nästa gång
-* Designa comments sidan, (designa hur varje comment ska se ut, OCH designa "Home" knappen)
-* Bestämma om du vill ha fler sidor (exempelvis en egen sida för att skapa quotes)
+* Fixa bugg, när man klickar på create knappen så krashar sidan. (Tips: Kolla så att längden på inputen är större än 0 :D)
 
 ## Upcomming
 * Designa kort vy av quotes
