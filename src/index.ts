@@ -350,6 +350,22 @@ io.on("connection", (socket: Socket) => {
 		socket.to("main").emit("like", data)
 	})
 
+	socket.on("createQuote", (data: {
+		id: string,
+		quote: string,
+		author: string
+	}) => {
+		socket.to("main").emit("createQuote", data)
+	});
+
+	socket.on("createcomment", (data: {
+		id: string,
+		comment: string,
+		author: string
+	}) => {
+		socket.to("main").emit("createcomment", data)
+	});
+
 	socket.on("deleteQuote", (data: string) => {
 		socket.to("main").emit("deleteQuote", data)
 	})
