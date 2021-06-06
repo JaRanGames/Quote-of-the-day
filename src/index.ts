@@ -381,7 +381,7 @@ io.on("connection", (socket: Socket) => {
 	})
 });
 
-server.listen(port, async () => {
+server.listen(process.env.PORT, async () => {
 	console.log("Server is Running");
 	connectDB();
 })
