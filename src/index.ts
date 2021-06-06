@@ -1,11 +1,11 @@
 import mongoose from "mongoose"
-import express from "express"
+import express, { Request, Response } from "express"
 import { connectDB } from "./database.connection"
 import quoteModel from "./quote.model"
 import { IQuotes } from "./quote.model"
 import morgan from "morgan"
 import { Socket } from "socket.io"
-import { stringify } from "querystring"
+import path from "path"
 
 const port = 25720
 const app = express()
@@ -13,6 +13,7 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(morgan("dev"))
+app.use(express.static(path.join(path.resolve(), "client")))
 
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
@@ -329,6 +330,10 @@ app.post("/quote/comment", async (req, res) => {
 	})
 
 	// SPara nya quoteDOCUMENT
+})
+
+app.get("*", (req: Request, res: Response) => {
+	res.sendFile(path.join(path.resolve() + "/client/index.html"))
 })
 
 /* 
