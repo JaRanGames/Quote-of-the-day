@@ -1,7 +1,8 @@
 import mongoose from "mongoose"
 
 export function connectDB() {
-    mongoose.connect("mongodb://127.0.0.1:27017/dailyQuotes?authSource=admin", {
+
+    mongoose.connect(process.env.NODE_ENV === "production" ? process.env.LIVE_DB_CONNECTION_STRING as string : process.env.DB_CONNECTION_STRING as string, {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 		useFindAndModify: false,
