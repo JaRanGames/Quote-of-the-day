@@ -333,6 +333,7 @@ app.post("/quote/comment", async (req, res) => {
 })
 
 app.get("*", (req: Request, res: Response) => {
+	console.log("Fetched client")
 	res.sendFile(path.join(path.resolve() + "/client/index.html"))
 })
 
